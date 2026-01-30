@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
@@ -54,7 +54,7 @@
   --card-foreground: oklch(0.13 0.028 261.692);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.13 0.028 261.692);
-  --primary: oklch(0.55 0.2 260); 
+  --primary: oklch(0.55 0.2 260);
   --primary-foreground: oklch(0.985 0 0);
   --secondary-foreground: oklch(0.21 0.034 264.665);
   --muted: oklch(0.96 0.01 260);
@@ -82,7 +82,7 @@
 }
 
 .dark {
-  --background: oklch(0.1 0.02 260); 
+  --background: oklch(0.1 0.02 260);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.12 0.02 260);
   --card-foreground: oklch(0.985 0 0);
