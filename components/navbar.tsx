@@ -10,17 +10,17 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="flex items-center gap-2">
-        <Link href="/sign-in">
+        <Link href="/sign-up">
           <Button
             variant="ghost"
             className="cursor-pointer font-medium text-muted-foreground hover:text-primary"
           >
-            Register
+            Create Account
           </Button>
         </Link>
-        <Link href="/sign-up">
+        <Link href="/sign-in">
           <Button className="cursor-pointer font-semibold shadow-sm">
-            Login
+            Sign In
           </Button>
         </Link>
       </div>
