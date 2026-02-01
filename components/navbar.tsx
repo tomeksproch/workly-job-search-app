@@ -1,7 +1,13 @@
+'use client'
+
 import Link from 'next/link'
-import { Button } from './ui/button'
+import { UserDropdown } from '@/components/navbar/user-dropdown'
+import { AuthButtons } from '@/components/navbar/auth-buttons'
+import { useSession } from '@/lib/auth/auth-client'
 
 export default function Navbar() {
+  const { data: session } = useSession()
+
   return (
     <nav className="flex items-center justify-between p-4 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex items-center gap-2">
@@ -9,20 +15,9 @@ export default function Navbar() {
           <span className="text-2xl font-bold text-foreground">workly.</span>
         </Link>
       </div>
+
       <div className="flex items-center gap-2">
-        <Link href="/sign-up">
-          <Button
-            variant="ghost"
-            className="cursor-pointer font-medium text-muted-foreground hover:text-primary"
-          >
-            Create Account
-          </Button>
-        </Link>
-        <Link href="/sign-in">
-          <Button className="cursor-pointer font-semibold shadow-sm">
-            Sign In
-          </Button>
-        </Link>
+        {session?.user ? <UserDropdown user={session.user} /> : <AuthButtons />}
       </div>
     </nav>
   )
