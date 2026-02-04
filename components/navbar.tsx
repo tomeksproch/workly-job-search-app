@@ -12,7 +12,9 @@ export default function Navbar() {
     <nav className="flex items-center justify-between p-4 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex items-center gap-2">
         <Link href="/">
-          <span className="text-2xl font-bold text-foreground">workly.</span>
+          <span className="text-2xl font-bold text-foreground">
+            workly<span className="text-primary text-4xl">.</span>
+          </span>
         </Link>
       </div>
 

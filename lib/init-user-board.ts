@@ -28,14 +28,17 @@ export async function initUserBoard(userId: string) {
   try {
     await connectDB()
 
-    const boardIsExisting = await Board.findOne({ userId, name: 'Job Hunt' })
+    const boardIsExisting = await Board.findOne({
+      userId,
+      name: 'Work applications',
+    })
 
     if (!boardIsExisting) {
       return boardIsExisting
     }
 
     const board = await Board.create({
-      name: 'Job Hunt',
+      name: 'Work applications',
       userId,
       columns: [],
     })
