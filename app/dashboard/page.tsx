@@ -1,3 +1,4 @@
+import KanbanBoard from '@/components/kaban-board'
 import { getSession } from '@/lib/auth/auth'
 import connectDB from '@/lib/db'
 import { Board } from '@/lib/models'
@@ -24,6 +25,7 @@ export default async function Dashboard() {
           <h1 className="text-3xl font-bold text-black">{board?.name}</h1>
           <p className="text-gray-600">Manage your job applications</p>
         </div>
+        <KanbanBoard board={board} userId={session.user.id} />
       </div>
     </div>
   )
