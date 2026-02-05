@@ -9,18 +9,36 @@ export default function Navbar() {
   const { data: session } = useSession()
 
   return (
-    <nav className="flex items-center justify-between p-4 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex items-center gap-2">
-        <Link href="/">
-          <span className="text-2xl font-bold text-foreground">
-            workly<span className="text-primary text-4xl">.</span>
-          </span>
-        </Link>
-      </div>
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        <div className="flex items-center gap-8">
+          <Link
+            href="/"
+            className="flex items-center space-x-2 transition-opacity hover:opacity-90"
+          >
+            <span className="text-3xl font-extrabold tracking-tighter text-foreground">
+              workly<span className="text-primary text-4xl ml-0.5">.</span>
+            </span>
+          </Link>
 
-      <div className="flex items-center gap-2">
-        {session?.user ? <UserDropdown user={session.user} /> : <AuthButtons />}
+          <nav className="hidden md:flex items-center gap-6"></nav>
+        </div>
+
+        <div className="flex items-center gap-4">
+          {session?.user ? (
+            <div className="flex items-center gap-4">
+              <Link href="/dashboard" className="hidden sm:block">
+                <span className="text-sm font-medium hover:text-primary">
+                  Go to Dashboard
+                </span>
+              </Link>
+              <UserDropdown user={session.user} />
+            </div>
+          ) : (
+            <AuthButtons />
+          )}
+        </div>
       </div>
-    </nav>
+    </header>
   )
 }
