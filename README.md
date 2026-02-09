@@ -26,20 +26,24 @@
 ```bash
 git clone [https://github.com/twoj-nick/workly.git](https://github.com/twoj-nick/workly.git)
 cd workly
-2. Instalacja zależności
-Bash
+```
 
+### 2. Instalacja zależności
+```bash
 npm install
-3. Konfiguracja środowiska
+```
+
+### 3. Konfiguracja środowiska
+
 Utwórz plik .env.local i uzupełnij go o swoje klucze:
-
-Fragment kodu
-
+Fragment kodu:
 MONGODB_URI=twoj_link_do_mongodb
 BETTER_AUTH_SECRET=twoj_sekret
 BETTER_AUTH_URL=http://localhost:3000
-4. Uruchomienie projektu
-Bash
 
+### 4. Uruchomienie projektu
+```bash
 npm run dev
+```
+
 Aplikacja będzie dostępna pod adresem: http://localhost:3000
