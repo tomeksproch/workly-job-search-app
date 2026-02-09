@@ -35,15 +35,16 @@ npm install
 
 ### 3. Konfiguracja środowiska
 
-Utwórz plik .env.local i uzupełnij go o swoje klucze:
-Fragment kodu:
+* **Utwórz plik .env.local i uzupełnij go o swoje klucze:**
+```bash
 MONGODB_URI=twoj_link_do_mongodb
 BETTER_AUTH_SECRET=twoj_sekret
 BETTER_AUTH_URL=http://localhost:3000
+```
 
 ### 4. Uruchomienie projektu
 ```bash
 npm run dev
 ```
 
-Aplikacja będzie dostępna pod adresem: http://localhost:3000
+* **Aplikacja będzie dostępna pod adresem: http://localhost:3000**
