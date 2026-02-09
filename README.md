@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Workly.
 
-## Getting Started
+**Workly** to nowoczesna aplikacja webowa zaprojektowana dla osób, które chcą przejąć pełną kontrolę nad procesem szukania pracy. Koniec z chaosem w arkuszach kalkulacyjnych – czas na wizualny system zarządzania karierą.
 
-First, run the development server:
+![Workly Hero Preview](public/hero-images/hero1.png)
 
+## ✨ Główne Funkcje
+
+* **System Kanban** – Zarządzaj aplikacjami poprzez intuicyjne kolumny: *Wishlist*, *Applied*, *Interview* oraz *Offer*.
+* **Nowoczesny Landing Page** – Odświeżony interfejs wykorzystujący układ Bento Grid oraz luksusowe animacje wejścia.
+* **Dynamiczne Zakładki** – Płynne przełączanie między widokami dashboardu z natychmiastowym podglądem interfejsu.
+* **Pełna Responsywność** – Aplikacja działa płynnie na każdym urządzeniu, od smartfona po szerokie monitory.
+* **Bezpieczna Autentykacja** – System logowania i rejestracji z dedykowanym menu użytkownika i awatarami.
+
+## 🛠️ Stack Technologiczny
+
+* **Frontend:** Next.js 15 (App Router), React, Tailwind CSS
+* **UI Components:** Shadcn/UI, Lucide React (ikony)
+* **Animacje:** Framer Motion
+* **Backend & Auth:** Better-Auth, Next.js API Routes
+* **Baza Danych:** MongoDB + Mongoose
+
+## 🚀 Jak zacząć?
+
+### 1. Klonowanie repozytorium
 ```bash
+git clone [https://github.com/twoj-nick/workly.git](https://github.com/twoj-nick/workly.git)
+cd workly
+2. Instalacja zależności
+Bash
+
+npm install
+3. Konfiguracja środowiska
+Utwórz plik .env.local i uzupełnij go o swoje klucze:
+
+Fragment kodu
+
+MONGODB_URI=twoj_link_do_mongodb
+BETTER_AUTH_SECRET=twoj_sekret
+BETTER_AUTH_URL=http://localhost:3000
+4. Uruchomienie projektu
+Bash
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Aplikacja będzie dostępna pod adresem: http://localhost:3000
