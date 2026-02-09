@@ -15,28 +15,25 @@ import { signIn } from '@/lib/auth/auth-client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Loader2, ArrowRight } from 'lucide-react'
 
 export default function SignIn() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-
   const router = useRouter()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-
     setError('')
     setLoading(true)
-
     try {
       const result = await signIn.email({
         email,
         password,
       })
-
       if (result.error) {
         setError(result.error.message ?? 'Failed to sign in')
       } else {
@@ -51,72 +48,109 @@ export default function SignIn() {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-white p-4">
-      <Card className="w-full max-w-md border-gray-200 shadow-lg">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-black">
-            Sign In
-          </CardTitle>
-          <CardDescription className="text-gray-600">
-            Enter your credentials to access your account
-          </CardDescription>
-        </CardHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <CardContent className="space-y-4">
-            {error && (
-              <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
-                {error}
+    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-gray-50/50">
+      <div className="absolute inset-0 -z-20 h-full w-full bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]" />
+      <div className="absolute top-[-10%] left-[-10%] -z-10 h-[500px] w-[500px] rounded-full bg-primary/20 blur-[100px] md:left-[-5%] md:top-[-5%]" />
+      <div className="absolute bottom-[-10%] right-[-10%] -z-10 h-[500px] w-[500px] rounded-full bg-blue-400/20 blur-[100px] md:bottom-[-5%] md:right-[-5%]" />
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10 w-full max-w-md px-4"
+      >
+        <div className="mb-6 text-center">
+          <Link
+            href="/"
+            className="inline-block transition-transform hover:scale-105"
+          >
+            <span className="text-3xl font-black tracking-tighter text-foreground">
+              workly<span className="text-primary text-4xl">.</span>
+            </span>
+          </Link>
+        </div>
+
+        <Card className="border border-gray-200 bg-white shadow-xl backdrop-blur-sm">
+          <CardHeader className="space-y-1 text-center">
+            <CardTitle className="text-2xl font-bold tracking-tight">
+              Welcome back
+            </CardTitle>
+            <CardDescription>
+              Enter your credentials to access your workspace
+            </CardDescription>
+          </CardHeader>
+          <form onSubmit={handleSubmit}>
+            <CardContent className="space-y-4">
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  className="rounded-lg bg-red-50 p-3 text-sm font-medium text-red-600 text-center border border-red-100"
+                >
+                  {error}
+                </motion.div>
+              )}
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@example.com"
+                  required
+                  className="h-11 bg-gray-50 transition-all focus:bg-white focus:ring-2 focus:ring-primary/20"
+                />
               </div>
-            )}
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-700">
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                required
-                className="border-gray-300 focus:border-primary focus:ring-primary"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-gray-700">
-                Password
-              </Label>
-              <Input
-                id="password"
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                minLength={8}
-                className="border-gray-300 focus:border-primary focus:ring-primary"
-              />
-            </div>
-          </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
-            <Button
-              type="submit"
-              className="w-full bg-primary hover:bg-primary/90"
-              disabled={loading}
-            >
-              {loading ? 'Signing in...' : 'Sign In'}
-            </Button>
-            <p className="text-center text-sm text-gray-600">
-              Don&apos;t have an account?{' '}
-              <Link
-                href="/sign-up"
-                className="font-medium text-primary hover:underline"
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Password</Label>
+                  <Link
+                    href="#"
+                    className="text-xs font-medium text-primary hover:underline"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  minLength={8}
+                  className="h-11 bg-gray-50 transition-all focus:bg-white focus:ring-2 focus:ring-primary/20"
+                />
+              </div>
+            </CardContent>
+            <CardFooter className="flex flex-col space-y-4 pt-2">
+              <Button
+                type="submit"
+                className="cursor-pointer group w-full h-11 text-base font-semibold shadow-md shadow-primary/20 transition-all hover:shadow-lg hover:shadow-primary/30"
+                disabled={loading}
               >
-                Sign up
-              </Link>
-            </p>
-          </CardFooter>
-        </form>
-      </Card>
+                {loading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    Sign In
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </>
+                )}
+              </Button>
+              <div className="text-center text-sm text-gray-500">
+                Don&apos;t have an account?{' '}
+                <Link
+                  href="/sign-up"
+                  className="cursor-pointer font-semibold text-primary transition-colors hover:text-primary/80 hover:underline"
+                >
+                  Create one now
+                </Link>
+              </div>
+            </CardFooter>
+          </form>
+        </Card>
+      </motion.div>
     </div>
   )
 }
