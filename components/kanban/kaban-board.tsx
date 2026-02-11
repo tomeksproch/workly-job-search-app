@@ -1,6 +1,6 @@
 'use client'
 
-import { Board, Column } from '@/lib/models/models.types'
+import { Board, Column, JobApplication } from '@/lib/models/models.types'
 import {
   Award,
   Calendar,
@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import CreateJobApplicationDialog from './create-job-dialog'
+import JobApplicationCard from './job-application-card'
 
 interface KanbanBoardProps {
   board: Board
@@ -66,12 +67,16 @@ function DroppableColumn({
   config,
   boardId,
   index,
+  sortedColumns,
 }: {
   column: Column
   config: ColConfig
   boardId: string
   index: number
+  sortedColumns: Column[]
 }) {
+  const sortedJobs =
+    column.jobApplications?.sort((a, b) => a.order - b.order) || []
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -105,7 +110,7 @@ function DroppableColumn({
             <Button
               variant="ghost"
               size="icon"
-              className="h-7 w-7 shrink-0 text-muted-foreground hover:bg-background hover:text-foreground"
+              className="cursor-pointer h-7 w-7 shrink-0 text-muted-foreground hover:bg-background hover:text-foreground"
             >
               <MoreHorizontal className="h-4 w-4" />
             </Button>
@@ -119,14 +124,40 @@ function DroppableColumn({
       </div>
 
       <div className="flex flex-1 flex-col gap-3 overflow-y-auto px-1 pb-2 [&::-webkit-scrollbar]:hidden">
+        {sortedJobs.map((job, key) => (
+          <SortableJobCard
+            key={key}
+            job={{ ...job, columnId: column._id || column._id }}
+            columns={sortedColumns}
+          />
+        ))}
         <CreateJobApplicationDialog columnId={column._id} boardId={boardId} />
       </div>
     </motion.div>
   )
 }
 
+function SortableJobCard({
+  job,
+  columns,
+}: {
+  job: JobApplication
+  columns: Column[]
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <JobApplicationCard job={job} columns={columns} />
+    </motion.div>
+  )
+}
+
 export default function KanbanBoard({ board }: KanbanBoardProps) {
   const columns = board.columns
+  const sortedColumns = columns.sort((a, b) => a.order - b.order)
 
   return (
     <div className="flex h-auto w-full flex-col p-4 md:p-6 xl:h-[calc(100vh-100px)]">
@@ -144,6 +175,7 @@ export default function KanbanBoard({ board }: KanbanBoardProps) {
               column={col}
               config={config}
               boardId={board._id}
+              sortedColumns={sortedColumns}
             />
           )
         })}
@@ -152,7 +184,7 @@ export default function KanbanBoard({ board }: KanbanBoardProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="flex h-[60px] w-full shrink-0 flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border/60 bg-transparent text-muted-foreground transition-all hover:border-primary/50 hover:bg-primary/5 hover:text-primary xl:w-[60px]"
+          className="cursor-pointer flex h-[60px] w-full shrink-0 flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border/60 bg-transparent text-muted-foreground transition-all hover:border-primary/50 hover:bg-primary/5 hover:text-primary xl:w-[60px]"
           title="Add New Column"
         >
           <Plus className="h-6 w-6" />

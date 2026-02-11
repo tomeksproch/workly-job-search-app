@@ -24,22 +24,74 @@ import {
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { useState } from 'react'
+import { createJobApplication } from '@/lib/actions/job-applications'
 
 interface CreateJobApplicationDialogProps {
   columnId: string
   boardId: string
 }
 
+interface JobApplicationFormData {
+  company: string
+  position: string
+  location: string
+  notes: string
+  salary: string
+  jobUrl: string
+  tags: string
+  description: string
+}
+
+const INITIAL_FORM_DATA: JobApplicationFormData = {
+  company: '',
+  position: '',
+  location: '',
+  notes: '',
+  salary: '',
+  jobUrl: '',
+  tags: '',
+  description: '',
+}
+
 export default function CreateJobApplicationDialog({
   columnId,
   boardId,
 }: CreateJobApplicationDialogProps) {
+  const [open, setOpen] = useState<boolean>(false)
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA)
+
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault()
+
+    try {
+      const res = await createJobApplication({
+        ...formData,
+        columnId,
+        boardId,
+        tags: formData.tags
+          .split(',')
+          .map((tag) => tag.trim())
+          .filter((tag) => tag.length > 0),
+      })
+
+      if (!res.error) {
+        setFormData(INITIAL_FORM_DATA)
+        setOpen(false)
+      } else {
+        console.error('Failed to create job:', res.error)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="group h-12 w-full justify-start rounded-xl border-dashed border-border bg-background/50 px-3 text-muted-foreground hover:border-primary hover:bg-primary/5 hover:text-primary"
+          className="cursor-pointer group h-12 w-full justify-start rounded-xl border-dashed border-border bg-background/50 px-3 text-muted-foreground hover:border-primary hover:bg-primary/5 hover:text-primary"
         >
           <Plus className="mr-2 h-4 w-4 shrink-0 transition-transform group-hover:scale-110" />
           <span className="truncate">Add new application</span>
@@ -57,7 +109,11 @@ export default function CreateJobApplicationDialog({
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto px-6 py-4">
-          <form className="space-y-5" id="create-job-form">
+          <form
+            className="space-y-5"
+            id="create-job-form"
+            onSubmit={handleSubmit}
+          >
             <div className="grid gap-5 md:grid-cols-2">
               <div className="space-y-2">
                 <Label
@@ -71,6 +127,10 @@ export default function CreateJobApplicationDialog({
                   placeholder="e.g. Acme Corp"
                   required
                   className="h-10 rounded-lg bg-secondary/30 focus:bg-background transition-colors"
+                  value={formData.company}
+                  onChange={(e) =>
+                    setFormData({ ...formData, company: e.target.value })
+                  }
                 />
               </div>
               <div className="space-y-2">
@@ -85,6 +145,10 @@ export default function CreateJobApplicationDialog({
                   placeholder="e.g. Frontend Engineer"
                   required
                   className="h-10 rounded-lg bg-secondary/30 focus:bg-background transition-colors"
+                  value={formData.position}
+                  onChange={(e) =>
+                    setFormData({ ...formData, position: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -101,6 +165,10 @@ export default function CreateJobApplicationDialog({
                   id="location"
                   placeholder="e.g. Remote"
                   className="h-10 rounded-lg bg-secondary/30 focus:bg-background transition-colors"
+                  value={formData.location}
+                  onChange={(e) =>
+                    setFormData({ ...formData, location: e.target.value })
+                  }
                 />
               </div>
               <div className="space-y-2">
@@ -114,6 +182,10 @@ export default function CreateJobApplicationDialog({
                   id="salary"
                   placeholder="e.g. $120k+"
                   className="h-10 rounded-lg bg-secondary/30 focus:bg-background transition-colors"
+                  value={formData.salary}
+                  onChange={(e) =>
+                    setFormData({ ...formData, salary: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -130,6 +202,10 @@ export default function CreateJobApplicationDialog({
                 type="url"
                 placeholder="https://..."
                 className="h-10 rounded-lg bg-secondary/30 focus:bg-background transition-colors"
+                value={formData.jobUrl}
+                onChange={(e) =>
+                  setFormData({ ...formData, jobUrl: e.target.value })
+                }
               />
             </div>
 
@@ -144,6 +220,10 @@ export default function CreateJobApplicationDialog({
                 id="tags"
                 placeholder="React, Remote..."
                 className="h-10 rounded-lg bg-secondary/30 focus:bg-background transition-colors"
+                value={formData.tags}
+                onChange={(e) =>
+                  setFormData({ ...formData, tags: e.target.value })
+                }
               />
             </div>
 
@@ -159,6 +239,10 @@ export default function CreateJobApplicationDialog({
                 rows={3}
                 placeholder="Key requirements..."
                 className="resize-none rounded-lg bg-secondary/30 focus:bg-background transition-colors min-h-[80px]"
+                value={formData.description}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
               />
             </div>
 
@@ -174,6 +258,10 @@ export default function CreateJobApplicationDialog({
                 rows={2}
                 placeholder="My thoughts..."
                 className="resize-none rounded-lg bg-secondary/30 focus:bg-background transition-colors min-h-[60px]"
+                value={formData.notes}
+                onChange={(e) =>
+                  setFormData({ ...formData, notes: e.target.value })
+                }
               />
             </div>
           </form>
@@ -183,14 +271,15 @@ export default function CreateJobApplicationDialog({
           <Button
             type="button"
             variant="outline"
-            className="h-10 rounded-lg px-6 w-full sm:w-auto"
+            className="cursor-pointer h-10 rounded-lg px-6 w-full sm:w-auto"
+            onClick={() => setOpen(false)}
           >
             Cancel
           </Button>
           <Button
             type="submit"
             form="create-job-form"
-            className="h-10 rounded-lg px-6 shadow-md shadow-primary/20 w-full sm:w-auto"
+            className="cursor-pointer h-10 rounded-lg px-6 shadow-md shadow-primary/20 w-full sm:w-auto"
           >
             Add Application
           </Button>
