@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { updateJobApplication } from '@/lib/actions/job-applications'
 
 interface JobApplicationCardProps {
   job: JobApplication
@@ -32,6 +33,16 @@ export default function JobApplicationCard({
   job,
   columns,
 }: JobApplicationCardProps) {
+
+  async function handleMove(newColumnId: string){
+    try {
+      const result = await updateJobApplication(job._id, { columnId: newColumnId })
+
+    } catch(err) {
+      console.log('Failed to move job application', err)
+    }
+  }
+
   return (
     <Card className="group relative z-10 rounded-xl border border-border/50 bg-white shadow-sm transition-all hover:border-primary/20 hover:shadow-md">
       <CardContent className="p-4">
@@ -63,7 +74,7 @@ export default function JobApplicationCard({
                   {columns
                     .filter((col) => col._id !== job.columnId)
                     .map((col, key) => (
-                      <DropdownMenuItem key={key} className="cursor-pointer">
+                      <DropdownMenuItem key={key} className="cursor-pointer" onClick={() => handleMove(col._id)}>
                         <Move className="mr-2 h-4 w-4" />
                         {col.name}
                       </DropdownMenuItem>
